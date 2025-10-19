@@ -15,6 +15,13 @@ const globalErrorHandler_1 = __importDefault(require("./middlewares/globalErrorH
 const notFound_1 = __importDefault(require("./middlewares/notFound"));
 const routes_1 = __importDefault(require("./routes"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)({
+    origin: [
+        "https://ayravel-customer.vercel.app",
+        "https://ayravel-admin-panel-nqo4.vercel.app"
+    ],
+    credentials: true
+}));
 app.use((0, express_session_1.default)({
     secret: config_1.default.EXPRESS_SESSION,
     resave: false,
@@ -28,18 +35,6 @@ app.use((0, cookie_parser_1.default)());
 app.set("trust proxy", 1);
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, morgan_1.default)("dev"));
-app.use((0, cors_1.default)({
-    origin: [
-        "http://localhost:3001",
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "https://milko-home.vercel.app",
-        "https://milko-admin-panel.vercel.app",
-        "https://milko-admin-panel-iota.vercel.app",
-        "https://milko-home-bice.vercel.app",
-    ],
-    credentials: true,
-}));
 //app routes
 app.use("/api/v1", routes_1.default);
 //root route

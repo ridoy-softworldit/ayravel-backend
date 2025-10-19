@@ -9,7 +9,16 @@ import config from "./config";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
 import router from "./routes";
+
 const app: Application = express();
+
+app.use(cors({
+  origin: [
+    "https://ayravel-customer.vercel.app",
+    "https://ayravel-admin-panel-nqo4.vercel.app"
+  ],
+  credentials: true
+}));
 
 app.use(
   expressSession({
@@ -27,22 +36,6 @@ app.use(cookieParser());
 app.set("trust proxy", 1);
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3001",
-      "http://localhost:5173",
-      "http://localhost:3000",
-      "https://ayravel-customer.vercel.app",
-      "https://ayravel-admin-panel-nqo4.vercel.app",
-      "https://aravel-backend-rho.vercel.app",
-
-
-    ],
-    credentials: true,
-  })
-);
 
 //app routes
 app.use("/api/v1", router);
