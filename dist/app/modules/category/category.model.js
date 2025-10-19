@@ -22,7 +22,7 @@ const categorySchema = new mongoose_1.Schema({
     icon: iconSchema,
     image: {
         type: String,
-        required: [true, "An image is required to create category!"],
+        // required: [true, "An image is required to create category!"],
     },
     bannerImg: {
         type: String,

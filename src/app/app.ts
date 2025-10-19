@@ -34,10 +34,11 @@ app.use(
       "http://localhost:3001",
       "http://localhost:5173",
       "http://localhost:3000",
-      "https://milko-home.vercel.app",
-      "https://milko-admin-panel.vercel.app",
-      "https://milko-admin-panel-iota.vercel.app",
-      "https://milko-home-bice.vercel.app",
+      "https://ayravel-customer.vercel.app",
+      "https://ayravel-admin-panel-nqo4.vercel.app",
+      "https://aravel-backend-rho.vercel.app",
+
+
     ],
     credentials: true,
   })

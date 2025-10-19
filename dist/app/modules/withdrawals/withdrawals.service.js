@@ -83,6 +83,39 @@ const createWithdrawalOnDB = (payload) => __awaiter(void 0, void 0, void 0, func
     return result;
 });
 // 🔹 Approve / Update Withdrawal
+// const updateWithdrawalOnDB = async (
+//   id: string,
+//   payload: Partial<TWithdrawals>
+// ) => {
+//   const withdrawal = await WithdrawalModel.findById(id);
+//   if (!withdrawal) {
+//     throw new AppError(httpStatus.NOT_FOUND, "Withdrawal not found!");
+//   }
+//   // ✅ If admin approves the withdrawal, deduct SR’s commission
+//   if (payload.status === "approved") {
+//     const user = await UserModel.findById(withdrawal.user);
+//     if (!user) {
+//       throw new AppError(httpStatus.NOT_FOUND, "User not found!");
+//     }
+//     const availableCommission =
+//       typeof user.commissionBalance === "number" ? user.commissionBalance : 0;
+//     if (withdrawal.amount > availableCommission) {
+//       throw new AppError(
+//         httpStatus.BAD_REQUEST,
+//         "Insufficient commission balance to approve withdrawal!"
+//       );
+//     }
+//     // Deduct the withdrawn amount
+//     user.commissionBalance = availableCommission - withdrawal.amount;
+//     await user.save();
+//   }
+//   const result = await WithdrawalModel.findByIdAndUpdate(id, payload, {
+//     new: true,
+//     runValidators: true,
+//   });
+//   return result;
+// };
+// 🔹 Approve / Update Withdrawal
 const updateWithdrawalOnDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const withdrawal = yield withdrawals_model_1.WithdrawalModel.findById(id);
     if (!withdrawal) {
@@ -98,14 +131,16 @@ const updateWithdrawalOnDB = (id, payload) => __awaiter(void 0, void 0, void 0, 
         if (withdrawal.amount > availableCommission) {
             throw new handleAppError_1.default(http_status_1.default.BAD_REQUEST, "Insufficient commission balance to approve withdrawal!");
         }
-        // Deduct the withdrawn amount
-        user.commissionBalance = availableCommission - withdrawal.amount;
-        yield user.save();
+        // 💰 Deduct withdrawn amount safely (without saving full user)
+        yield user_model_1.UserModel.findByIdAndUpdate(user._id, {
+            $inc: { commissionBalance: -withdrawal.amount },
+        });
     }
+    // ✅ Only update withdrawal document fields
     const result = yield withdrawals_model_1.WithdrawalModel.findByIdAndUpdate(id, payload, {
         new: true,
         runValidators: true,
-    });
+    }).populate("user");
     return result;
 });
 // Other functions remain same

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagModel = void 0;
 const mongoose_1 = require("mongoose");
 const iconSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
+    name: { type: String },
     url: { type: String },
 }, { _id: false } // Prevents creating a separate _id for icon
 );
