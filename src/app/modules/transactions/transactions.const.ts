@@ -1,0 +1,1 @@
+export const TransactionsSearchableFields = ["trackingNumber"];
